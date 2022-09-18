@@ -31,8 +31,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
 /**
@@ -55,7 +55,8 @@ public class DemoBot extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-
+    private DcMotor lift = null;
+    private Servo grab = null;
     private DcMotor spinner = null;
 
     @Override
@@ -68,13 +69,16 @@ public class DemoBot extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-
+        lift    = hardwareMap.get(DcMotor.class, "lift");
+        grab  = hardwareMap.get(Servo.class, "grab");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -87,6 +91,7 @@ public class DemoBot extends LinearOpMode {
             double leftPower;
             double rightPower;
             double spinnerPower;
+            double liftPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -108,12 +113,29 @@ public class DemoBot extends LinearOpMode {
             rightDrive.setPower(rightPower);
 
             spinnerPower = 0.0;
-            if (gamepad1.left_bumper) {
+            if (gamepad1.left_bumper || gamepad2.left_bumper) {
                 spinnerPower = 1.0;
-            } else if (gamepad1.right_bumper) {
+            } else if (gamepad1.right_bumper || gamepad2.right_bumper) {
                 spinnerPower = -1.0;
             }
             spinner.setPower(spinnerPower);
+
+            liftPower = 0.0;
+            if (gamepad2.dpad_up) {
+                liftPower = .45;
+            } else if (gamepad2.dpad_down) {
+                liftPower = -.45;
+            } else {
+                liftPower = 0.0;
+            }
+            lift.setPower(liftPower);
+
+            if (gamepad2.a) {
+                // move to 0 degrees.
+                grab.setPosition(0.4);
+            } else {
+                grab.setPosition(0.2);
+            }
 
             // Show the elapsed game time and wheel power.
             //telemetry.addData("Status", "Run Time: " + runtime.toString());
