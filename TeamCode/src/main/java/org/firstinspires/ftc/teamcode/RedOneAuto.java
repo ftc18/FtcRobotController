@@ -41,63 +41,20 @@ public class RedOneAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     EosHardware robot = new EosHardware(this);
 
-
     @Override
     public void runOpMode() {
         robot.init();
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");    //
+        robot.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("Status", "Ready to run");
         telemetry.update();
-
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
-        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
-
-        //FIRST THING
         robot.setServoPosition(robot.SERVOCLOSED);
         robot.stop();
-        // Step 1:  Drive forward for 2 seconds
-        robot.straight(-.5);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.7)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.stop();
-        // Step 2:  Move left for 1 seconds (check dirrection)
-        robot.strafe(.5);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.4)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.stop();
-        // Step 3:   Bring up linear slide for 7 seconds
-        robot.slide(1);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 4.95)) {
-            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.stop();
-
-
-        //Move forward a lil
-
-        runtime.reset();
-        robot.straight(-.5);
-        while (opModeIsActive() && (runtime.seconds() < .1)) {
-            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        // Step 4:  Open arm to drop cone
+        robot.straightTimed(-.5, 3.7);
+        robot.strafeTimed(.5, .5,1.01);
+        robot.slideTimed(1, 5.09);
+        robot.straightTimed(-.5,.01);
         runtime.reset();
         robot.setServoPosition(robot.SERVOOPENED);
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-        sleep(1000);
-
     }
 }

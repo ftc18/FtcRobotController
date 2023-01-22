@@ -93,7 +93,17 @@ public class MechWheelTeleop extends LinearOpMode {
                 servo_position = 1.0;
             }
             robot.setServoPosition(servo_position);
-            robot.driveRobot(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
+            double gp1LY=gamepad1.left_stick_y;
+            double gp1LX=gamepad1.left_stick_x;
+            double gp1RX=gamepad1.right_stick_x;
+            double slowscale=0.33333333333;
+            if (gamepad1.right_bumper){
+                gp1LY *= slowscale;
+                gp1LX *= slowscale;
+                gp1RX *= slowscale;
+            }
+            robot.driveRobot(-gp1LY, gp1LX, gp1RX);
 
             // If the slide goes the wrong way, change the negative sign!!!!!!!
             double slide_position;
@@ -106,6 +116,7 @@ public class MechWheelTeleop extends LinearOpMode {
                 slide_position = 0.0;
             }
             robot.slide(slide_position);
+         }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -113,4 +124,4 @@ public class MechWheelTeleop extends LinearOpMode {
 
         }
 
-    }}
+    }
