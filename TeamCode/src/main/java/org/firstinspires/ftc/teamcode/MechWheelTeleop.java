@@ -70,7 +70,7 @@ public class MechWheelTeleop extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     EosHardware robot      = new EosHardware(this);
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
     robot.init();

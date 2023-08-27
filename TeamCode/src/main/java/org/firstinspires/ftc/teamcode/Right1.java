@@ -28,33 +28,33 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.EosHardware;
 
-@Autonomous(name="RedOneAuto", group="Robot")
+@Autonomous(name = "Right1re", group = "Robot")
 //@Disabled
-public class RedOneAuto extends LinearOpMode {
+public class Right1 extends LinearOpMode {
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
     EosHardware robot = new EosHardware(this);
 
-    @Override
+   // @Override
     public void runOpMode() {
         robot.init();
-        robot.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
         waitForStart();
+        robot.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.setServoPosition(robot.SERVOCLOSED);
-        robot.stop();
-        robot.straightTimed(-.5, 3.7);
-        robot.strafeTimed(.5, .5,1.01);
-        robot.slideTimed(1, 5.09);
-        robot.straightTimed(-.5,.01);
-        runtime.reset();
+        robot.init();
+        robot.straightByEncoder(-1,-28.5, 10);
+        robot.strafeTimed(1, 6.2);
+        robot.turnToHeading(1, 30);
+        robot.straightByEncoder(1,1.8,4);
+        robot.slideTimed(1,5.8);
+        robot.straightByEncoder(-1,-6,6.8);
+        robot.straightTimed(1,2.5);
         robot.setServoPosition(robot.SERVOOPENED);
     }
 }
