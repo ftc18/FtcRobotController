@@ -45,6 +45,16 @@ public class autocenterstage extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
         waitForStart();
+        robot.straightByEncoder(10,32,30);
+        robot.turnToHeading(1, -90);
+        //sense object
+        robot.turnToHeading(1, 0);
+        //sense object
+        robot.turnToHeading(1,90);
+        //sense object
+        robot.strafeTimed(1,4);
+
+
 
 
     }
